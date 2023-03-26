@@ -32,12 +32,11 @@ namespace Project1.models
             string connectionString = "Server=DESKTOP-PDGLL5M\\SQLEXPRESS; Database=EvaluacionPractica; Trusted_Connection=True;";
             SqlConnection connection = new(connectionString);
             connection.Open();
+            var montoInicial = cuentas[0].monto;
 
             for (var i = 0; i < cuentas.Count; i++)
             {
-                var montoInicial = cuentas[0].monto;
                 decimal montoTotal = Convert.ToDecimal(MontoPago(cuentas[i]));
-
                 if (montoInicial > montoTotal)
                 {
                     var updatePrestamo = $"Update prestamos set estado = 'Pagado' where id_prestamo = {cuentas[i].idPrestamo}";
@@ -46,8 +45,11 @@ namespace Project1.models
 
                     montoInicial = montoInicial - montoTotal;
                     var updateMonto = $"Update cuentasDebito set monto = {montoInicial} where id = {cuentas[i].id}";
+
                     SqlCommand command2 = new(updateMonto, connection);
                     command2.ExecuteNonQuery();
+
+                    Console.WriteLine($"Cliente: {cuentas[i].id}, Monto: {montoInicial}");
                 }
             }
         }

@@ -11,7 +11,7 @@ namespace prueba
             SqlConnection connection = new(connectionString);
             connection.Open();
 
-            var consult = "SELECT cd.id, cd.monto, p.id_prestamo, p.fecha, p.monto as deuda, p.estado from cuentasDebito cd join prestamos p on cd.id = p.cliente where cd.estado = 'Activa' and p.estado = 'Pendiente'";
+            var consult = "SELECT cd.id, cd.monto, p.id_prestamo, p.fecha, p.monto as deuda, p.estado from cuentasDebito cd join prestamos p on cd.id = p.cliente where cd.estado = 'Activa' and p.estado = 'Pendiente' order by p.fecha desc";
             SqlCommand command = new(consult, connection);
 
             SqlDataReader reader = command.ExecuteReader();
